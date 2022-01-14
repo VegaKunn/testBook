@@ -1,31 +1,49 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Inicio() {
-  /*
-const Salvar = async (chave, valor) => {
+  const [baka, setBaka] = useState();
 
-
+  const storeData = async value => {
     try {
-      await AsyncStorage.setItem(chave, valor);
-    } catch (a) {
-      alert('err' + a);
+      await AsyncStorage.setItem('stor', 'mamaco aranha');
+    } catch (e) {
+      alert(e);
     }
   };
-  const Ler = async chave => {
-    const teste = await AsyncStorage.getItem(chave);
-    setBaka(teste);
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.removeItem('stor');
+      setBaka(value);
+    } catch (e) {
+      // error reading value
+    }
   };
+  /* 
+  storeData('muito estranho');
+  getData();
+ */
 
-  Salvar('teste', 'é parece que funcionou');
-  Ler('teste');
-
-
-*/
-
+  console.log(baka);
   return (
     <View style={es.corpo}>
-      <Text>152</Text>
+      <TouchableHighlight
+        style={{backgroundColor: '#fef', width: 100}}
+        onPress={() => {
+          storeData();
+        }}>
+        <Text>Salva</Text>
+      </TouchableHighlight>
+      <Text style={{fontSize: 40}}>{baka}</Text>
+
+      <TouchableHighlight
+        style={{backgroundColor: '#fef', width: 100}}
+        onPress={() => {
+          getData();
+        }}>
+        <Text>Ler</Text>
+      </TouchableHighlight>
     </View>
   );
 }

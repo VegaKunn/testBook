@@ -11,20 +11,37 @@ import {
   TextInput,
 } from 'react-native';
 import {useState} from 'react/cjs/react.development';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// Livros aqui
 let livros = [
-  {nome: 'Senhor Dos Anéis', genero: 'binario', paginas: '1000', lidas: '0'},
-  {nome: 'Harry Potter', genero: 'fluido', paginas: '500', lidas: '0'},
+  {
+    id: '1',
+    nome: 'Senhor Dos Anéis',
+    genero: 'binario',
+    paginas: '1000',
+    lidas: '0',
+  },
+  {id: '2', nome: 'Harry Potter', genero: 'fluido', paginas: '500', lidas: '0'},
 ];
 
+const consteudo = async (chave, conteudo) => {
+  try {
+    await AsyncStorage.setItem(chave, conteudo);
+  } catch (e) {
+    alert(e);
+  }
+};
+
 export default function Livros() {
-  const [lista, setLista] = useState(true);
-  const [nomeLivro, setNomeLivro] = useState(null);
-  const [nPaginas, setNPaginas] = useState(null);
-  const [categoria, setCategoria] = useState('Categoria');
-  const [abrir, setAbrir] = useState(false);
-  const [salvar, setSalvar] = useState(true);
-  const [adicionar, setAdicionar] = useState(false);
+  const [lista, setLista] = useState(true); // quando true mostra a lista de livros
+  const [nomeLivro, setNomeLivro] = useState(null); //nome do livro
+  const [nPaginas, setNPaginas] = useState(null); // numero de paginas totais do livro
+  const [categoria, setCategoria] = useState('Categoria'); // categoria do livro
+  const [criarId, setCriarId] = useState('');
+  const [abrir, setAbrir] = useState(false); // se true mostra lista de generos
+  const [salvar, setSalvar] = useState(true); // se true mostra botao salvar
+  const [adicionar, setAdicionar] = useState(false); // se true mostra aba para cadastro
   /////////
   const allCategorias = [
     {nome: 'Ação'},
@@ -91,7 +108,7 @@ export default function Livros() {
                   style={es.inpt2}
                   value={nPaginas}
                   onChangeText={value => {
-                    setNPaginas(value);
+                    setNPaginas(Number.parseInt(value));
                   }}
                 />
               </View>
@@ -119,18 +136,19 @@ export default function Livros() {
               </TouchableOpacity>
             </View>
 
-            {/*  skasdfksfksfkljsjfkskfjsdajlfsfjklasfhasdjklfshfjksjhfsjk*/}
-
             {salvar && (
               <TouchableHighlight
                 style={es.salvarEstilo}
                 onPress={() => {
                   if (
                     nomeLivro !== null &&
-                    nPaginas !== null &&
+                    nPaginas > 0 &&
+                    nPaginas < 10000 &&
                     categoria !== 'categoria'
                   ) {
+                    setCriarId(livros.length + 1);
                     livros.push({
+                      id: criarId,
                       nome: nomeLivro,
                       genero: categoria,
                       paginas: nPaginas,
@@ -178,28 +196,31 @@ export default function Livros() {
           </View>
         )}
 
+        {/* Quando true mostra a lista de livros */}
         {lista && (
           <View style={{width: '100%'}}>
             <FlatList
-              // keyExtractor={baka.id}
+              keyExtractor={livros.id}
               data={livros}
               renderItem={({item}) => {
                 return (
-                  <View style={es.addDiv}>
-                    <View style={{maxWidth: '55%', minWidth: '55%'}}>
-                      <Text numberOfLines={1} style={es.texto}>
-                        {item.nome}
-                      </Text>
+                  <>
+                    <View style={es.addDiv}>
+                      <View style={{maxWidth: '55%', minWidth: '55%'}}>
+                        <Text numberOfLines={1} style={es.texto}>
+                          {item.nome}
+                        </Text>
+                      </View>
+                      <View style={{maxWidth: '30%', minWidth: '15%'}}>
+                        <Text style={es.texto}>{item.genero}</Text>
+                      </View>
+                      <View style={{maxWidth: '15%'}}>
+                        <Text style={es.texto}>
+                          {(item.lidas / item.paginas).toFixed(2) * 100}%
+                        </Text>
+                      </View>
                     </View>
-                    <View style={{maxWidth: '30%', minWidth: '15%'}}>
-                      <Text style={es.texto}>{item.genero}</Text>
-                    </View>
-                    <View style={{maxWidth: '15%'}}>
-                      <Text style={es.texto}>
-                        {(item.lidas / item.paginas).toFixed(2) * 100}%
-                      </Text>
-                    </View>
-                  </View>
+                  </>
                 );
               }}
             />

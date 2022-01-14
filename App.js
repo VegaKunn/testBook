@@ -62,6 +62,7 @@ export default function App() {
           name="Livros"
           component={MLivros}
           options={{
+            headerShown: false,
             headerTransparent: true,
             title: '',
             headerStyle: {
@@ -84,6 +85,7 @@ export default function App() {
           name="Loja"
           component={Shop}
           options={{
+            headerShown: false,
             headerTransparent: true,
             title: '',
             headerStyle: {
@@ -106,6 +108,7 @@ export default function App() {
           name="Inicio"
           component={Inicio}
           options={{
+            headerShown: false,
             headerTransparent: true,
             title: '',
             headerStyle: {
@@ -129,6 +132,7 @@ export default function App() {
           name="Timer"
           component={Timer}
           options={{
+            headerShown: false,
             headerTransparent: true,
             title: '',
             headerStyle: {
@@ -151,6 +155,7 @@ export default function App() {
           name="Perfil"
           component={Perfil}
           options={{
+            headerShown: false,
             headerTransparent: true,
             title: '',
             headerStyle: {
