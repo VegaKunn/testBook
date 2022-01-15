@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import {useState} from 'react/cjs/react.development';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icones from 'react-native-vector-icons/Feather';
+import Icones2 from 'react-native-vector-icons/AntDesign';
 
 // Livros aqui
 let livros = [
@@ -21,6 +23,7 @@ let livros = [
     genero: 'binario',
     paginas: '1000',
     lidas: '0',
+    notas: '',
   },
   {id: '2', nome: 'Harry Potter', genero: 'fluido', paginas: '500', lidas: '0'},
 ];
@@ -39,9 +42,14 @@ export default function Livros() {
   const [nPaginas, setNPaginas] = useState(null); // numero de paginas totais do livro
   const [categoria, setCategoria] = useState('Categoria'); // categoria do livro
   const [criarId, setCriarId] = useState('');
+  const [paginaAtual, setPaginaAtual] = useState(0);
+  const [notas, setNotas] = useState('');
   const [abrir, setAbrir] = useState(false); // se true mostra lista de generos
   const [salvar, setSalvar] = useState(true); // se true mostra botao salvar
   const [adicionar, setAdicionar] = useState(false); // se true mostra aba para cadastro
+
+  const [baka, setBaka] = useState('');
+
   /////////
   const allCategorias = [
     {nome: 'Ação'},
@@ -205,21 +213,128 @@ export default function Livros() {
               renderItem={({item}) => {
                 return (
                   <>
-                    <View style={es.addDiv}>
-                      <View style={{maxWidth: '55%', minWidth: '55%'}}>
-                        <Text numberOfLines={1} style={es.texto}>
-                          {item.nome}
-                        </Text>
+                    <TouchableOpacity
+                      onPress={() => {
+                        if (baka != item.id) {
+                          setBaka(item.id);
+                        } else if (baka == item.id) {
+                          setBaka('');
+                        }
+                      }}>
+                      <View style={es.addDiv}>
+                        <View style={{maxWidth: '55%', minWidth: '55%'}}>
+                          <Text numberOfLines={1} style={es.texto}>
+                            {item.nome}
+                          </Text>
+                        </View>
+                        <View style={{maxWidth: '30%', minWidth: '15%'}}>
+                          <Text style={es.texto}>{item.genero}</Text>
+                        </View>
+                        <View style={{maxWidth: '15%'}}>
+                          <Text style={es.texto}>
+                            {(item.lidas / item.paginas).toFixed(2) * 100}%
+                          </Text>
+                        </View>
                       </View>
-                      <View style={{maxWidth: '30%', minWidth: '15%'}}>
-                        <Text style={es.texto}>{item.genero}</Text>
+                    </TouchableOpacity>
+                    {baka == item.id && (
+                      <View style={es.registro2}>
+                        <View style={es.livroStatus}>
+                          <Text style={es.texto}>{item.nome}</Text>
+                          <Text style={es.texto}>
+                            Ultima Pag.: {item.lidas}
+                          </Text>
+                        </View>
+                        <View style={es.livroStatus}>
+                          <Text style={es.texto}>Pagina atual:</Text>
+                          <View
+                            style={{
+                              width: '73%',
+                              alignItems: 'flex-end',
+                            }}>
+                            <TextInput
+                              maxLength={4}
+                              keyboardType="numeric"
+                              style={es.inpt3}
+                              value={paginaAtual}
+                              onChangeText={value => {
+                                setPaginaAtual(Number.parseInt(value));
+                              }}
+                            />
+                          </View>
+                          <TextInput />
+                        </View>
+                        <View style={es.livroStatus}>
+                          <Text style={es.texto}>Notas sobre o livro: </Text>
+                          <TextInput
+                            style={es.inpt4}
+                            value={notas}
+                            onChangeText={value => {
+                              setNotas(value);
+                            }}
+                          />
+                        </View>
+                        <View style={es.livroStatus2}>
+                          <View>
+                            <Text style={{fontSize: 30, color: '#000'}}>
+                              Notas
+                            </Text>
+                          </View>
+                          <View style={{width: '100%', marginTop: 10}}>
+                            <Text>{item.notas}</Text>
+                          </View>
+                          <View
+                            style={{
+                              width: '100%',
+                              marginTop: 10,
+                              flexDirection: 'row',
+                              justifyContent: 'flex-end',
+                            }}>
+                            <View
+                              style={{
+                                width: 50,
+                                height: 50,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: 500,
+                                marginLeft: 10,
+                                backgroundColor: '#e00',
+                              }}>
+                              <Icones2
+                                name="delete"
+                                style={{
+                                  fontSize: 40,
+                                  color: '#000',
+                                }}
+                              />
+                            </View>
+                            <TouchableOpacity
+                              onPress={() => {
+                                livros[0].lidas = 30;
+                                item.lidas = 30;
+                                console.log(livros[0]);
+                              }}
+                              style={{
+                                width: 50,
+                                height: 50,
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderRadius: 500,
+                                marginLeft: 10,
+                                backgroundColor: '#0c0',
+                              }}>
+                              <Icones
+                                name="save"
+                                style={{
+                                  fontSize: 40,
+                                  color: '#000',
+                                }}
+                              />
+                            </TouchableOpacity>
+                          </View>
+                        </View>
                       </View>
-                      <View style={{maxWidth: '15%'}}>
-                        <Text style={es.texto}>
-                          {(item.lidas / item.paginas).toFixed(2) * 100}%
-                        </Text>
-                      </View>
-                    </View>
+                    )}
                   </>
                 );
               }}
@@ -247,7 +362,6 @@ const es = StyleSheet.create({
   },
   registro: {
     width: '100%',
-
     padding: 15,
     paddingTop: 30,
     marginTop: 20,
@@ -255,6 +369,14 @@ const es = StyleSheet.create({
     borderColor: '#000',
     borderRadius: 20,
     borderWidth: 8,
+  },
+  registro2: {
+    width: '100%',
+    padding: 15,
+    backgroundColor: '#8fe',
+    borderColor: '#000',
+    borderRadius: 20,
+    borderWidth: 2,
   },
   regDiv: {
     minWidth: '38%',
@@ -283,6 +405,26 @@ const es = StyleSheet.create({
     borderStyle: 'solid',
     borderRadius: 10,
     width: '40%',
+  },
+  inpt3: {
+    color: '#000',
+    textAlign: 'center',
+    backgroundColor: '#ddd',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderRadius: 10,
+    width: '30%',
+    height: 40,
+  },
+  inpt4: {
+    color: '#000',
+    textAlign: 'center',
+    backgroundColor: '#ddd',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderRadius: 10,
+    width: '58%',
+    height: 40,
   },
   divBaixa: {
     justifyContent: 'flex-end',
@@ -324,6 +466,20 @@ const es = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  livroStatus: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+    width: '100%',
+    flexDirection: 'row',
+  },
+  livroStatus2: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 10,
+    width: '100%',
+    flexDirection: 'column',
   },
   divTex: {
     width: '70%',
