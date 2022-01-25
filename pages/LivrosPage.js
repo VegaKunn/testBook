@@ -1,4 +1,4 @@
-import React, {State} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
@@ -9,46 +9,69 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  LogBox,
 } from 'react-native';
-import {useState} from 'react/cjs/react.development';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icones from 'react-native-vector-icons/Feather';
 import Icones2 from 'react-native-vector-icons/AntDesign';
 
-// Livros aqui
-let livros = [
-  {
-    id: '1',
-    nome: 'Senhor Dos Anéis',
-    genero: 'binario',
-    paginas: '1000',
-    lidas: '0',
-    notas: '',
-  },
-  {id: '2', nome: 'Harry Potter', genero: 'fluido', paginas: '500', lidas: '0'},
-];
-
-const consteudo = async (chave, conteudo) => {
-  try {
-    await AsyncStorage.setItem(chave, conteudo);
-  } catch (e) {
-    alert(e);
-  }
-};
-
 export default function Livros() {
+  //  console.disableYellowBox = true;
+  LogBox.ignoreAllLogs();
+  // Livros aqui
+
+  const storeData = async value => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('allLivros', jsonValue);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  const getData = async () => {
+    const teste = [];
+
+    try {
+      const jsonValue = await AsyncStorage.getItem('allLivros');
+      const recebedor = jsonValue != null ? JSON.parse(jsonValue) : teste;
+
+      setLivros(recebedor);
+      let teste2 = recebedor.length + 1;
+
+      setCriarId(teste2);
+      console.log(teste2);
+    } catch (e) {
+      // error reading value
+    }
+  };
+
   const [lista, setLista] = useState(true); // quando true mostra a lista de livros
   const [nomeLivro, setNomeLivro] = useState(null); //nome do livro
   const [nPaginas, setNPaginas] = useState(null); // numero de paginas totais do livro
   const [categoria, setCategoria] = useState('Categoria'); // categoria do livro
-  const [criarId, setCriarId] = useState('');
-  const [paginaAtual, setPaginaAtual] = useState(0);
-  const [notas, setNotas] = useState('');
+  const [criarId, setCriarId] = useState(''); // cria um ID
+  const [paginaAtual, setPaginaAtual] = useState(0); // mostra pagina atual
+  const [notas, setNotas] = useState(''); // faz comentarios
   const [abrir, setAbrir] = useState(false); // se true mostra lista de generos
   const [salvar, setSalvar] = useState(true); // se true mostra botao salvar
   const [adicionar, setAdicionar] = useState(false); // se true mostra aba para cadastro
 
   const [baka, setBaka] = useState('');
+
+  const [livros, setLivros] = useState([]);
+  // livros = [];
+  function limparTudo() {
+    AsyncStorage.removeItem('allLivros');
+  }
+
+  useEffect(() => {
+    getData();
+
+    //  limparTudo();
+    console.log(livros);
+  }, []);
 
   /////////
   const allCategorias = [
@@ -154,14 +177,18 @@ export default function Livros() {
                     nPaginas < 10000 &&
                     categoria !== 'categoria'
                   ) {
-                    setCriarId(livros.length + 1);
                     livros.push({
-                      id: criarId,
+                      id: livros.length < 1 ? '1' : criarId,
                       nome: nomeLivro,
                       genero: categoria,
                       paginas: nPaginas,
                       lidas: '0',
                     });
+                    console.log(livros);
+                    console.log(livros.length);
+                    storeData(livros);
+                    getData();
+
                     setAdicionar(false);
                     setLista(true);
                   }
@@ -208,7 +235,6 @@ export default function Livros() {
         {lista && (
           <View style={{width: '100%'}}>
             <FlatList
-              keyExtractor={livros.id}
               data={livros}
               renderItem={({item}) => {
                 return (
