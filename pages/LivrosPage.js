@@ -69,7 +69,7 @@ export default function Livros() {
   useEffect(() => {
     getData();
 
-    //  limparTudo();
+    // limparTudo();
     console.log(livros);
   }, []);
 
@@ -307,7 +307,9 @@ export default function Livros() {
                             </Text>
                           </View>
                           <View style={{width: '100%', marginTop: 10}}>
-                            <Text>{item.notas}</Text>
+                            <Text style={{color: '#000', fontSize: 20}}>
+                              {item.notas}
+                            </Text>
                           </View>
                           <View
                             style={{
@@ -336,9 +338,17 @@ export default function Livros() {
                             </View>
                             <TouchableOpacity
                               onPress={() => {
-                                livros[0].lidas = 30;
-                                item.lidas = 30;
-                                console.log(livros[0]);
+                                if (notas != '') {
+                                  item.notas = notas;
+                                }
+                                if (paginaAtual != '') {
+                                  item.lidas = paginaAtual;
+                                }
+
+                                setNotas('');
+                                setPaginaAtual('');
+                                storeData(livros);
+                                getData();
                               }}
                               style={{
                                 width: 50,
