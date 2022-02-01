@@ -318,7 +318,25 @@ export default function Livros() {
                               flexDirection: 'row',
                               justifyContent: 'flex-end',
                             }}>
-                            <View
+                            <TouchableOpacity
+                              onPress={() => {
+                                const apagarItem = item.id - 1;
+                                livros.splice(apagarItem, 1);
+                                const livrosAtualizados = [];
+                                livros.map((i, index) => {
+                                  const novoID = index + 1;
+                                  let LA = {
+                                    id: novoID,
+                                    genero: i.genero,
+                                    lidas: i.lidas,
+                                    nome: i.nome,
+                                    paginas: i.paginas,
+                                  };
+                                  livrosAtualizados.push(LA);
+                                });
+                                storeData(livrosAtualizados);
+                                getData();
+                              }}
                               style={{
                                 width: 50,
                                 height: 50,
@@ -335,13 +353,13 @@ export default function Livros() {
                                   color: '#000',
                                 }}
                               />
-                            </View>
+                            </TouchableOpacity>
                             <TouchableOpacity
                               onPress={() => {
                                 if (notas != '') {
                                   item.notas = notas;
                                 }
-                                if (paginaAtual != '') {
+                                if (paginaAtual !== '') {
                                   item.lidas = paginaAtual;
                                 }
 
