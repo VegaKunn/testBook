@@ -8,7 +8,6 @@ import LivrosP from './pages/LivrosPage';
 import PerfilP from './pages/PerfilPage';
 import ShopP from './pages/ShopPage';
 import TimerP from './pages/TimerPage';
-import T from './pages/T';
 import Icones from 'react-native-vector-icons/Feather';
 import Icones2 from 'react-native-vector-icons/AntDesign';
 import Icones3 from 'react-native-vector-icons/FontAwesome';
@@ -24,7 +23,7 @@ function MLivros() {
 function Shop() {
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text>Shop</Text>
+      <ShopP />
     </View>
   );
 }
