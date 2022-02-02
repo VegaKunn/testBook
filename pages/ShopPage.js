@@ -1,14 +1,30 @@
-import React from 'react';
-import {View, SafeAreaView, ScrollView, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  FlatList,
+  StyleSheet,
+} from 'react-native';
 import CardLivros from '../components/CardLivros';
 import CategoriasShop from '../components/CategoriasShop';
+import Lista from '../components/Lista';
+import TodosArrays from '../store/TodosArrays';
 
 export default function Shop() {
+  const [alternador, setAlternador] = useState(false);
+  const [seletor, setSeletor] = useState(0);
+  //
   return (
     <SafeAreaView style={es.corpo}>
-      <ScrollView style={es.rolagem}>
-        <CardLivros />
-        <CategoriasShop />
+      <ScrollView showsVerticalScrollIndicator={false} style={es.rolagem}>
+        <CardLivros mudar={setAlternador} />
+        {alternador ? (
+          <Lista produto={TodosArrays[seletor]} />
+        ) : (
+          <CategoriasShop setSeletor={setSeletor} mudar={setAlternador} />
+        )}
       </ScrollView>
     </SafeAreaView>
   );

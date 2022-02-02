@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Lista from '../components/Lista';
 export default function Inicio() {
   const [baka, setBaka] = useState();
 
