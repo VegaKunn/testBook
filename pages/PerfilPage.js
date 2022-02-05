@@ -8,6 +8,7 @@ import {
   StyleSheet,
   FlatList,
 } from 'react-native';
+import Icones from 'react-native-vector-icons/Entypo';
 
 const teste = [
   {id: '1', nome: 'Harry Pottery', nota: '10', pagi: '1000/1000'},
@@ -38,16 +39,34 @@ export default function Perfil() {
             }}>
             <Text style={es.titulos}>Status</Text>
           </View>
-          <View style={{padding: 10}}>
-            <Text style={es.fonteStatus}>Livros Lidos: </Text>
-            <Text style={es.fonteStatus}>Paginas Totais: </Text>
-            <Text style={es.fonteStatus}>Maior Q/P Hora: </Text>
-            <Text style={es.fonteStatus}>Livros Lidos Aventura: </Text>
-            <Text style={es.fonteStatus}>Livros Lidos Classicos: </Text>
-            <Text style={es.fonteStatus}>Livros Lidos Desen. Pessoal: </Text>
-            <Text style={es.fonteStatus}>Livros Lidos Horror: </Text>
-            <Text style={es.fonteStatus}>Livros Lidos Romance: </Text>
-            <Text style={es.fonteStatus}>Livros Lidos Tecnicos: </Text>
+          <View style={es.alinharDiv}>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icones name="trophy" size={30} color="#cd7f32" />
+              <Text style={es.texto}>Bronze</Text>
+              <Text style={es.texto}>5</Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icones name="trophy" size={30} color="#cdd5e0" />
+              <Text style={es.texto}>Prata</Text>
+              <Text style={es.texto}>5</Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Icones name="trophy" size={30} color="#ffd700" />
+              <Text style={es.texto}>Ouro</Text>
+              <Text style={es.texto}>5</Text>
+            </View>
           </View>
         </View>
         <TouchableHighlight
@@ -140,7 +159,7 @@ const es = StyleSheet.create({
   },
   rolagem: {
     width: '100%',
-
+    backgroundColor: '#333',
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 10,
@@ -152,7 +171,7 @@ const es = StyleSheet.create({
     marginBottom: 10,
     minHeight: 50,
     borderWidth: 3,
-    borderColor: '#000',
+    borderColor: '#e5e3e2',
     borderRadius: 15,
   },
   cardGenerico: {
@@ -181,17 +200,22 @@ const es = StyleSheet.create({
     backgroundColor: '#3b287b',
     flexDirection: 'row',
   },
+  alinharDiv: {
+    justifyContent: 'space-around',
+    flexDirection: 'row',
+    padding: 10,
+  },
   titulos: {
-    color: '#000',
+    color: '#e5e3e2',
     fontSize: 30,
     padding: 10,
   },
   fonteStatus: {
-    color: '#000',
+    color: '#e5e3e2',
     fontSize: 20,
   },
   texto: {
-    color: '#000',
+    color: '#e5e3e2',
     fontSize: 16,
   },
 });

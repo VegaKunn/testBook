@@ -6,8 +6,33 @@ import {
   Text,
   StyleSheet,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Timer() {
+  ///////// Banco de Dados
+
+  const storeBronze = async value => {
+    try {
+      await AsyncStorage.setItem('prata', value);
+    } catch (e) {
+      // saving error
+    }
+  };
+  const storePrata = async value => {
+    try {
+      await AsyncStorage.setItem('prata', value);
+    } catch (e) {
+      // saving error
+    }
+  };
+  const storeOuro = async value => {
+    try {
+      await AsyncStorage.setItem('ouro', value);
+    } catch (e) {
+      // saving error
+    }
+  };
+
   /////// Visibilidade das Divs
 
   const [comecar, setComecar] = useState(true);
@@ -104,12 +129,12 @@ export default function Timer() {
             <TouchableHighlight
               style={es.tempo}
               onPress={() => {
-                setMinu(10);
+                setMinu(15);
                 setEscolherTempo(false);
                 setNaoDefinido(true);
                 bora();
               }}>
-              <Text style={{fontSize: 25, color: '#000'}}>10</Text>
+              <Text style={{fontSize: 25, color: '#000'}}>15</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={es.tempo}
@@ -117,19 +142,19 @@ export default function Timer() {
                 setEscolherTempo(false);
                 setNaoDefinido(true);
                 bora();
-                setMinu(20);
-              }}>
-              <Text style={{fontSize: 25, color: '#000'}}>20</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              style={es.tempo}
-              onPress={() => {
                 setMinu(30);
-                setEscolherTempo(false);
-                setNaoDefinido(true);
-                bora();
               }}>
               <Text style={{fontSize: 25, color: '#000'}}>30</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={es.tempo}
+              onPress={() => {
+                setMinu(45);
+                setEscolherTempo(false);
+                setNaoDefinido(true);
+                bora();
+              }}>
+              <Text style={{fontSize: 25, color: '#000'}}>45</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={es.tempo}

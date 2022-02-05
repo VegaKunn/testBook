@@ -70,7 +70,7 @@ export default function CategoriasShop(props) {
           mudar(true);
         }}
         style={ShopCss.divClicavel}>
-        <Text style={ShopCss.texto}>Profissionalizante</Text>
+        <Text style={ShopCss.texto}>Politicos</Text>
       </TouchableOpacity>
     </View>
   );
