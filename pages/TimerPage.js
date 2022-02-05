@@ -9,25 +9,64 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Timer() {
+  function limparTudo() {
+    AsyncStorage.removeItem('bronze');
+  }
+
   ///////// Banco de Dados
+  const [testando, setTestando] = useState(0);
+  const [trofeu, setTrofeu] = useState();
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    try {
+      let abc;
+      let prata;
+      let ouro;
+      abc = await AsyncStorage.getItem('bronze');
+      prata = await AsyncStorage.getItem('prata');
+      ouro = await AsyncStorage.getItem('ouro');
+      let bronzeN = Number(abc);
+      setTestando(bronzeN);
+      // console.log(abc);
+      // console.log(prataAki);
+      // console.log(ouroAki);
+    } catch (e) {
+      // error reading value
+    }
+  };
 
   const storeBronze = async value => {
     try {
-      await AsyncStorage.setItem('prata', value);
+      let bibi = testando + 1;
+      console.log(bibi);
+      const hihi = bibi.toString();
+      await AsyncStorage.setItem('bronze', hihi);
+      getData();
     } catch (e) {
       // saving error
     }
   };
   const storePrata = async value => {
+    // getData();
     try {
-      await AsyncStorage.setItem('prata', value);
+      let bibi = testando + 1;
+      const hihi = bibi.toString();
+      await AsyncStorage.setItem('prata', hihi);
+      getData();
     } catch (e) {
       // saving error
     }
   };
   const storeOuro = async value => {
+    //   getData();
     try {
-      await AsyncStorage.setItem('ouro', value);
+      const guardarValor = ouroAki + value;
+      console.log('3 ' + guardarValor);
+      await AsyncStorage.setItem('ouro', guardarValor);
     } catch (e) {
       // saving error
     }
@@ -50,10 +89,19 @@ export default function Timer() {
     setContador(!contador);
   };
 
-  const recomecar = () => {
+  const recomecar = valor => {
+    console.log(valor);
     setMinu(0);
     setSecu(0);
     setContador(false);
+
+    if (valor == 'bronze') {
+      storeBronze();
+    } else if (valor == 'prata') {
+      storePrata();
+    } else if (valor == 'ouro') {
+      storeOuro();
+    }
   };
 
   useEffect(() => {
@@ -61,7 +109,7 @@ export default function Timer() {
     if (contador) {
       intervalo = setInterval(() => {
         somar ? setSecu(secu => secu + 1) : setSecu(secu => secu - 1);
-      }, 1000);
+      }, 1);
     } else if (!contador && secu !== 0) {
       clearInterval(intervalo);
     }
@@ -77,8 +125,9 @@ export default function Timer() {
     setMinu(minu => minu - 1);
   } else if (minu < 0) {
     setEscolherTempo(false);
+    setNaoDefinido(false);
     setComecar(true);
-    recomecar();
+    recomecar(trofeu);
   }
 
   return (
@@ -133,16 +182,24 @@ export default function Timer() {
                 setEscolherTempo(false);
                 setNaoDefinido(true);
                 bora();
+                setTrofeu('bronze');
+                //  console.log(trofeu);
               }}>
               <Text style={{fontSize: 25, color: '#000'}}>15</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={es.tempo}
               onPress={() => {
+                storeBronze();
+                // getData();
+                // limparTudo();
+                /* 
                 setEscolherTempo(false);
                 setNaoDefinido(true);
                 bora();
                 setMinu(30);
+                trofeu = 'bronze';
+                */
               }}>
               <Text style={{fontSize: 25, color: '#000'}}>30</Text>
             </TouchableHighlight>
@@ -153,6 +210,7 @@ export default function Timer() {
                 setEscolherTempo(false);
                 setNaoDefinido(true);
                 bora();
+                trofeu = 'prata';
               }}>
               <Text style={{fontSize: 25, color: '#000'}}>45</Text>
             </TouchableHighlight>
@@ -163,6 +221,7 @@ export default function Timer() {
                 setEscolherTempo(false);
                 setNaoDefinido(true);
                 bora();
+                trofeu = 'ouro';
               }}>
               <Text style={{fontSize: 25, color: '#000'}}>60</Text>
             </TouchableHighlight>
