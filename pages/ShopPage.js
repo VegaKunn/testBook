@@ -34,7 +34,7 @@ const es = StyleSheet.create({
   corpo: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#333',
+    backgroundColor: '#000005', // '#1b1e23'
     alignItems: 'center',
   },
   rolagem: {

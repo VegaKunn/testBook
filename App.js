@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -12,48 +12,57 @@ import Icones from 'react-native-vector-icons/Feather';
 import Icones2 from 'react-native-vector-icons/AntDesign';
 import Icones3 from 'react-native-vector-icons/FontAwesome';
 import Icones4 from 'react-native-vector-icons/MaterialIcons';
-function MLivros() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <LivrosP />
-    </View>
-  );
-}
-
-function Shop() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ShopP />
-    </View>
-  );
-}
-
-function Inicio() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <InicioP />
-    </View>
-  );
-}
-
-function Timer() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <TimerP />
-    </View>
-  );
-}
-function Perfil() {
-  return (
-    <View>
-      <PerfilP />
-    </View>
-  );
-}
-
-const Tab = createBottomTabNavigator();
 
 export default function App() {
+  const [valorBronze, setValorBronze] = useState(0);
+  const [valorPrata, setValorPrata] = useState(0);
+  const [valorOuro, setValorOuro] = useState(0);
+
+  function MLivros() {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <LivrosP />
+      </View>
+    );
+  }
+
+  function Shop() {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <ShopP />
+      </View>
+    );
+  }
+
+  function Inicio() {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <InicioP />
+      </View>
+    );
+  }
+
+  function Timer() {
+    return (
+      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <TimerP
+          perfilOuro={setValorOuro}
+          perfilPrata={setValorPrata}
+          perfilBronze={setValorBronze}
+        />
+      </View>
+    );
+  }
+  function Perfil() {
+    return (
+      <View>
+        <PerfilP ou={valorOuro} pr={valorPrata} br={valorBronze} />
+      </View>
+    );
+  }
+
+  const Tab = createBottomTabNavigator();
+
   return (
     <NavigationContainer>
       <Tab.Navigator initialRouteName="Inicio">

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   SafeAreaView,
@@ -9,6 +9,7 @@ import {
   FlatList,
 } from 'react-native';
 import Icones from 'react-native-vector-icons/Entypo';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const teste = [
   {id: '1', nome: 'Harry Pottery', nota: '10', pagi: '1000/1000'},
@@ -24,7 +25,34 @@ const teste = [
 ];
 
 const baka = teste;
-export default function Perfil() {
+export default function Perfil(props) {
+  const [valorBronze, setValorBronze] = useState();
+  const [valorPrata, setValorPrata] = useState();
+  const [valorOuro, setValorOuro] = useState();
+  const getData = async () => {
+    try {
+      let bronze = await AsyncStorage.getItem('bronze');
+      let prata = await AsyncStorage.getItem('prata');
+      let ouro = await AsyncStorage.getItem('ouro');
+      if (bronze == null) {
+        bronze = 0;
+      }
+      if (prata == null) {
+        prata = 0;
+      }
+      if (ouro == null) {
+        ouro = 0;
+      }
+      setValorBronze(bronze);
+      setValorPrata(prata);
+      setValorOuro(ouro);
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   const [lidos, setLidos] = useState(false);
   const [progresso, setProgresso] = useState(false);
 
@@ -47,7 +75,9 @@ export default function Perfil() {
               }}>
               <Icones name="trophy" size={30} color="#cd7f32" />
               <Text style={es.texto}>Bronze</Text>
-              <Text style={es.texto}>5</Text>
+              <Text style={es.texto}>
+                {valorBronze > props.br ? valorBronze : props.br}
+              </Text>
             </View>
             <View
               style={{
@@ -56,7 +86,9 @@ export default function Perfil() {
               }}>
               <Icones name="trophy" size={30} color="#cdd5e0" />
               <Text style={es.texto}>Prata</Text>
-              <Text style={es.texto}>5</Text>
+              <Text style={es.texto}>
+                {valorPrata > props.pr ? valorPrata : props.pr}
+              </Text>
             </View>
             <View
               style={{
@@ -65,7 +97,9 @@ export default function Perfil() {
               }}>
               <Icones name="trophy" size={30} color="#ffd700" />
               <Text style={es.texto}>Ouro</Text>
-              <Text style={es.texto}>5</Text>
+              <Text style={es.texto}>
+                {valorOuro > props.ou ? valorOuro : props.ou}
+              </Text>
             </View>
           </View>
         </View>
@@ -110,6 +144,7 @@ export default function Perfil() {
         <TouchableHighlight
           style={es.cardGenerico2}
           onPress={() => {
+            getData();
             setProgresso(!progresso);
           }}>
           <Text style={{fontSize: 25, color: '#fff'}}>Para Terminar</Text>
@@ -154,12 +189,12 @@ const es = StyleSheet.create({
   corpo: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#eee',
+    // backgroundColor: '#eee',
     alignItems: 'center',
   },
   rolagem: {
     width: '100%',
-    backgroundColor: '#333',
+    backgroundColor: '#000005', // '#14181f' '#1b1e23'
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 10,
@@ -184,7 +219,7 @@ const es = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 3,
     borderColor: '#09b1ec',
-    backgroundColor: '#0463ca',
+    backgroundColor: '#000005', // '#0463ca'
     flexDirection: 'row',
   },
   cardGenerico2: {
@@ -197,7 +232,7 @@ const es = StyleSheet.create({
     borderRadius: 15,
     borderWidth: 3,
     borderColor: '#7e4eff',
-    backgroundColor: '#3b287b',
+    backgroundColor: '#000005', //'#3b287b'
     flexDirection: 'row',
   },
   alinharDiv: {

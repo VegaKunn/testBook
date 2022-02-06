@@ -8,13 +8,17 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function Timer() {
+export default function Timer(props) {
   function limparTudo() {
     AsyncStorage.removeItem('bronze');
+    AsyncStorage.removeItem('prata');
+    AsyncStorage.removeItem('ouro');
   }
 
   ///////// Banco de Dados
   const [testando, setTestando] = useState(0);
+  const [prataFixo, setPrataFixo] = useState(0);
+  const [ouroFixo, setOuroFixo] = useState(0);
   const [trofeu, setTrofeu] = useState();
 
   useEffect(() => {
@@ -23,17 +27,32 @@ export default function Timer() {
 
   const getData = async () => {
     try {
-      let abc;
+      let bronze;
       let prata;
       let ouro;
-      abc = await AsyncStorage.getItem('bronze');
+      bronze = await AsyncStorage.getItem('bronze');
       prata = await AsyncStorage.getItem('prata');
       ouro = await AsyncStorage.getItem('ouro');
-      let bronzeN = Number(abc);
+      if (bronze == null) {
+        bronze = 0;
+      }
+      if (prata == null) {
+        prata = 0;
+      }
+      if (ouro == null) {
+        ouro = 0;
+      }
+
+      let bronzeN = Number(bronze);
+      let prataN = Number(prata);
+      let ouroN = Number(ouro);
+
+      props.perfilOuro(ouro);
+      props.perfilPrata(prata);
+      props.perfilBronze(bronze);
       setTestando(bronzeN);
-      // console.log(abc);
-      // console.log(prataAki);
-      // console.log(ouroAki);
+      setPrataFixo(prataN);
+      setOuroFixo(ouroN);
     } catch (e) {
       // error reading value
     }
@@ -41,10 +60,10 @@ export default function Timer() {
 
   const storeBronze = async value => {
     try {
-      let bibi = testando + 1;
-      console.log(bibi);
-      const hihi = bibi.toString();
-      await AsyncStorage.setItem('bronze', hihi);
+      let valorSomado = testando + 1;
+      console.log(valorSomado);
+      const valorString = valorSomado.toString();
+      await AsyncStorage.setItem('bronze', valorString);
       getData();
     } catch (e) {
       // saving error
@@ -53,7 +72,7 @@ export default function Timer() {
   const storePrata = async value => {
     // getData();
     try {
-      let bibi = testando + 1;
+      let bibi = prataFixo + 1;
       const hihi = bibi.toString();
       await AsyncStorage.setItem('prata', hihi);
       getData();
@@ -64,9 +83,10 @@ export default function Timer() {
   const storeOuro = async value => {
     //   getData();
     try {
-      const guardarValor = ouroAki + value;
-      console.log('3 ' + guardarValor);
-      await AsyncStorage.setItem('ouro', guardarValor);
+      let valorSomado = ouroFixo + 1;
+      const valorString = valorSomado.toString();
+      await AsyncStorage.setItem('ouro', valorString);
+      getData();
     } catch (e) {
       // saving error
     }
@@ -90,7 +110,6 @@ export default function Timer() {
   };
 
   const recomecar = valor => {
-    console.log(valor);
     setMinu(0);
     setSecu(0);
     setContador(false);
@@ -109,7 +128,7 @@ export default function Timer() {
     if (contador) {
       intervalo = setInterval(() => {
         somar ? setSecu(secu => secu + 1) : setSecu(secu => secu - 1);
-      }, 1);
+      }, 1000);
     } else if (!contador && secu !== 0) {
       clearInterval(intervalo);
     }
@@ -136,7 +155,7 @@ export default function Timer() {
         <Text style={es.titulo}>Defina um tempo de leitutretra</Text>
       </View>
       <View>
-        <Text style={{fontSize: 45, color: '#000'}}>{`${
+        <Text style={{fontSize: 45, color: '#fff'}}>{`${
           minu < 10 ? `0${minu}` : `${minu}`
         }:${secu < 10 ? `0${secu}` : `${secu}`}`}</Text>
       </View>
@@ -148,7 +167,7 @@ export default function Timer() {
               setEscolher(true);
               setComecar(false);
             }}>
-            <Text style={{fontSize: 20}}>Começar</Text>
+            <Text style={{fontSize: 20, color: '#eee'}}>Começar</Text>
           </TouchableHighlight>
         )}
         {escolher && (
@@ -182,26 +201,20 @@ export default function Timer() {
                 setEscolherTempo(false);
                 setNaoDefinido(true);
                 bora();
-                setTrofeu('bronze');
-                //  console.log(trofeu);
+                setTrofeu('');
               }}>
-              <Text style={{fontSize: 25, color: '#000'}}>15</Text>
+              <Text style={{fontSize: 25, color: '#fff'}}>15</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={es.tempo}
               onPress={() => {
-                storeBronze();
-                // getData();
-                // limparTudo();
-                /* 
                 setEscolherTempo(false);
                 setNaoDefinido(true);
                 bora();
                 setMinu(30);
-                trofeu = 'bronze';
-                */
+                setTrofeu('bronze');
               }}>
-              <Text style={{fontSize: 25, color: '#000'}}>30</Text>
+              <Text style={{fontSize: 25, color: '#fff'}}>30</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={es.tempo}
@@ -210,9 +223,9 @@ export default function Timer() {
                 setEscolherTempo(false);
                 setNaoDefinido(true);
                 bora();
-                trofeu = 'prata';
+                setTrofeu('prata');
               }}>
-              <Text style={{fontSize: 25, color: '#000'}}>45</Text>
+              <Text style={{fontSize: 25, color: '#fff'}}>45</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={es.tempo}
@@ -221,9 +234,9 @@ export default function Timer() {
                 setEscolherTempo(false);
                 setNaoDefinido(true);
                 bora();
-                trofeu = 'ouro';
+                setTrofeu('ouro');
               }}>
-              <Text style={{fontSize: 25, color: '#000'}}>60</Text>
+              <Text style={{fontSize: 25, color: '#fff'}}>60</Text>
             </TouchableHighlight>
           </>
         )}
@@ -242,6 +255,8 @@ export default function Timer() {
               <TouchableHighlight
                 style={es.def}
                 onPress={() => {
+                  getData();
+                  setTrofeu('');
                   recomecar();
                   setNaoDefinido(false);
                   setComecar(true);
@@ -260,7 +275,7 @@ const es = StyleSheet.create({
   corpo: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#169',
+    backgroundColor: '#000005', // '#14181f' '#1b1e23'
 
     alignItems: 'center',
     padding: 15,
@@ -270,7 +285,7 @@ const es = StyleSheet.create({
     marginTop: 50,
   },
   titulo: {
-    color: '#000',
+    color: '#fff',
     fontSize: 22,
   },
   botoes: {
@@ -286,7 +301,7 @@ const es = StyleSheet.create({
     marginRight: 5,
     marginBottom: 30,
     borderRadius: 10,
-    backgroundColor: '#3399ff',
+    backgroundColor: '#667788', // '#3399ff'
   },
   naoDef: {
     borderWidth: 1,
@@ -299,7 +314,7 @@ const es = StyleSheet.create({
     marginRight: 5,
     marginBottom: 30,
     borderRadius: 10,
-    backgroundColor: '#00fa00',
+    backgroundColor: '#696969', // '#00fa00'
   },
   def: {
     borderWidth: 1,
@@ -312,7 +327,7 @@ const es = StyleSheet.create({
     marginRight: 5,
     marginBottom: 30,
     borderRadius: 10,
-    backgroundColor: '#3399ff',
+    backgroundColor: '#9f9f9f', // '#3399ff'
   },
   tempo: {
     borderWidth: 1,
@@ -323,6 +338,6 @@ const es = StyleSheet.create({
     marginRight: 5,
     marginBottom: 30,
     borderRadius: 10,
-    backgroundColor: '#aa33ff',
+    backgroundColor: '#373743', // '#aa33ff'
   },
 });

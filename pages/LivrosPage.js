@@ -404,7 +404,7 @@ const es = StyleSheet.create({
   corpo: {
     width: '100%',
     height: '100%',
-    backgroundColor: '#eee',
+    backgroundColor: '#000005', //252525 '#1b1e23'
     alignItems: 'center',
   },
   rolagem: {
@@ -419,7 +419,7 @@ const es = StyleSheet.create({
     padding: 15,
     paddingTop: 30,
     marginTop: 20,
-    backgroundColor: '#0c7',
+    backgroundColor: '#4d4d4d', //'#0c7'
     borderColor: '#000',
     borderRadius: 20,
     borderWidth: 8,
@@ -427,7 +427,7 @@ const es = StyleSheet.create({
   registro2: {
     width: '100%',
     padding: 15,
-    backgroundColor: '#8fe',
+    backgroundColor: '#585c64', // '#8fe' '#4d4d4d' '#282c34'
     borderColor: '#000',
     borderRadius: 20,
     borderWidth: 2,
@@ -503,7 +503,7 @@ const es = StyleSheet.create({
     // borderWidth: 2,
     marginBottom: 10,
     marginTop: 10,
-    backgroundColor: '#3399ff',
+    backgroundColor: '#7f8689', //'#3399ff' '#282c34' '#666d7d'
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
@@ -546,13 +546,12 @@ const es = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#cc0000',
     borderRadius: 100,
   },
   salvarEstilo: {
     width: '100%',
     height: 50,
-    backgroundColor: '#3399ff',
+    backgroundColor: '#191919', //'#3399ff'
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 15,
