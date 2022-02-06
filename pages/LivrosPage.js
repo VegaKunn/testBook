@@ -75,12 +75,14 @@ export default function Livros() {
 
   /////////
   const allCategorias = [
-    {nome: 'Ação'},
-    {nome: 'Suspense'},
     {nome: 'Aventura'},
-    {nome: 'Romance'},
+    {nome: 'Suspense'},
     {nome: 'Ficção'},
+    {nome: 'Romance'},
     {nome: 'Fantasia'},
+    {nome: 'Finanças'},
+    {nome: 'Des. Pessoal'},
+    {nome: 'Politica'},
   ];
 
   return (
@@ -94,7 +96,7 @@ export default function Livros() {
           }}>
           <View style={es.addDiv}>
             <View style={es.divTex}>
-              <Text style={{fontSize: 22, color: '#eee'}}>
+              <Text style={{fontSize: 25, color: '#eee'}}>
                 Adicionar nova leitura
               </Text>
             </View>
@@ -218,7 +220,7 @@ export default function Livros() {
                             alignItems: 'center',
                             padding: 5,
                           }}>
-                          <Text style={{fontSize: 18, color: '#000'}}>
+                          <Text style={{fontSize: 20, color: '#000'}}>
                             {item.nome}
                           </Text>
                         </TouchableOpacity>
@@ -419,7 +421,7 @@ const es = StyleSheet.create({
     padding: 15,
     paddingTop: 30,
     marginTop: 20,
-    backgroundColor: '#4d4d4d', //'#0c7'
+    backgroundColor: '#858585', //'#0c7'
     borderColor: '#000',
     borderRadius: 20,
     borderWidth: 8,
@@ -427,7 +429,7 @@ const es = StyleSheet.create({
   registro2: {
     width: '100%',
     padding: 15,
-    backgroundColor: '#585c64', // '#8fe' '#4d4d4d' '#282c34'
+    backgroundColor: '#989ca4', // '#8fe' '#4d4d4d' '#282c34'
     borderColor: '#000',
     borderRadius: 20,
     borderWidth: 2,
@@ -503,10 +505,12 @@ const es = StyleSheet.create({
     // borderWidth: 2,
     marginBottom: 10,
     marginTop: 10,
-    backgroundColor: '#7f8689', //'#3399ff' '#282c34' '#666d7d'
+    backgroundColor: '#4f5659', //'#3399ff' '#282c34' '#666d7d'
     justifyContent: 'space-around',
     alignItems: 'center',
     flexDirection: 'row',
+    borderWidth: 2,
+    borderColor: '#ccc',
   },
   livroDiv: {
     width: '100%',
@@ -559,8 +563,8 @@ const es = StyleSheet.create({
     marginTop: 15,
   },
   texto: {
-    color: '#000',
-    fontSize: 16,
+    color: '#000000',
+    fontSize: 18,
   },
   toque: {
     width: '100%',
