@@ -1,11 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   SafeAreaView,
   ScrollView,
   Text,
   FlatList,
+  BackHandler,
   StyleSheet,
+  LogBox,
 } from 'react-native';
 import CardLivros from '../components/CardLivros';
 import CategoriasShop from '../components/CategoriasShop';
@@ -13,8 +15,18 @@ import Lista from '../components/Lista';
 import TodosArrays from '../store/TodosArrays';
 
 export default function Shop() {
+  LogBox.ignoreAllLogs();
   const [alternador, setAlternador] = useState(false);
   const [seletor, setSeletor] = useState(0);
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      setAlternador(false);
+      setSeletor(0);
+      return () => BackHandler.remove();
+    });
+  }, []);
+
   //
   return (
     <SafeAreaView style={es.corpo}>

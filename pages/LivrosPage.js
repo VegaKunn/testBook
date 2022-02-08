@@ -10,6 +10,7 @@ import {
   Text,
   TextInput,
   LogBox,
+  BackHandler,
 } from 'react-native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -57,8 +58,20 @@ export default function Livros() {
   const [abrir, setAbrir] = useState(false); // se true mostra lista de generos
   const [salvar, setSalvar] = useState(true); // se true mostra botao salvar
   const [adicionar, setAdicionar] = useState(false); // se true mostra aba para cadastro
-
+  const [ocultarNotas, setOcultarNotas] = useState(false);
   const [baka, setBaka] = useState('');
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      setLista(true);
+      setAbrir(false);
+      setSalvar(true);
+      setAdicionar(false);
+      setOcultarNotas(false);
+      setBaka('');
+      return () => BackHandler.remove();
+    });
+  }, []);
 
   const [livros, setLivros] = useState([]);
   // livros = [];
@@ -274,34 +287,41 @@ export default function Livros() {
                           </Text>
                         </View>
                         <View style={es.livroStatus}>
-                          <Text style={es.texto}>Pagina atual:</Text>
-                          <View
-                            style={{
-                              width: '73%',
-                              alignItems: 'flex-end',
-                            }}>
-                            <TextInput
-                              maxLength={4}
-                              keyboardType="numeric"
-                              style={es.inpt3}
-                              value={paginaAtual}
-                              onChangeText={value => {
-                                setPaginaAtual(Number.parseInt(value));
-                              }}
-                            />
+                          <View>
+                            <Text style={es.texto}>Pagina atual:</Text>
                           </View>
-                          <TextInput />
-                        </View>
-                        <View style={es.livroStatus}>
-                          <Text style={es.texto}>Notas sobre o livro: </Text>
+
                           <TextInput
+                            maxLength={4}
+                            keyboardType="numeric"
+                            style={es.inpt3}
+                            value={paginaAtual}
+                            onChangeText={value => {
+                              setPaginaAtual(Number.parseInt(value));
+                            }}
+                          />
+                        </View>
+                        <TouchableOpacity
+                          onPress={() => {
+                            setOcultarNotas(!ocultarNotas);
+                          }}
+                          style={es.livroStatus2}>
+                          <Text style={es.texto2}>
+                            Adicionar notas sobre o livro! :)
+                          </Text>
+                          <Text style={es.texto2}>Click Aqui!</Text>
+                        </TouchableOpacity>
+                        {ocultarNotas && (
+                          <TextInput
+                            placeholder="Precione Enter para Quebrar linha e Espaço + salvar para apagar as notas"
+                            multiline={true}
                             style={es.inpt4}
                             value={notas}
                             onChangeText={value => {
                               setNotas(value);
                             }}
                           />
-                        </View>
+                        )}
                         <View style={es.livroStatus2}>
                           <View>
                             <Text style={{fontSize: 30, color: '#000'}}>
@@ -469,18 +489,21 @@ const es = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'solid',
     borderRadius: 10,
-    width: '30%',
+    width: 90,
     height: 40,
   },
   inpt4: {
+    fontSize: 18,
     color: '#000',
-    textAlign: 'center',
+    marginTop: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
     backgroundColor: '#ddd',
     borderWidth: 1,
     borderStyle: 'solid',
     borderRadius: 10,
-    width: '58%',
-    height: 40,
+    width: '100%',
+    minHeight: 100,
   },
   divBaixa: {
     justifyContent: 'flex-end',
@@ -563,8 +586,13 @@ const es = StyleSheet.create({
     marginTop: 15,
   },
   texto: {
-    color: '#000000',
+    color: '#000',
     fontSize: 18,
+  },
+  texto2: {
+    color: '#000',
+    fontSize: 20,
+    fontStyle: 'italic',
   },
   toque: {
     width: '100%',

@@ -7,6 +7,8 @@ import {
   Text,
   StyleSheet,
   FlatList,
+  BackHandler,
+  LogBox,
 } from 'react-native';
 import Icones from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,6 +28,7 @@ const teste = [
 
 const baka = teste;
 export default function Perfil(props) {
+  LogBox.ignoreAllLogs();
   const [valorBronze, setValorBronze] = useState();
   const [valorPrata, setValorPrata] = useState();
   const [valorOuro, setValorOuro] = useState();
@@ -55,6 +58,16 @@ export default function Perfil(props) {
 
   const [lidos, setLidos] = useState(false);
   const [progresso, setProgresso] = useState(false);
+
+  /*
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      setLidos(false);
+      setProgresso(false);
+      return () => BackHandler.remove();
+    });
+  }, []);
+  */
 
   return (
     <SafeAreaView style={es.corpo}>

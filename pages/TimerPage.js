@@ -5,10 +5,13 @@ import {
   TouchableHighlight,
   Text,
   StyleSheet,
+  LogBox,
+  BackHandler,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Timer(props) {
+  LogBox.ignoreAllLogs();
   function limparTudo() {
     AsyncStorage.removeItem('bronze');
     AsyncStorage.removeItem('prata');
@@ -104,6 +107,19 @@ export default function Timer(props) {
   const [minu, setMinu] = useState(0);
   const [secu, setSecu] = useState(0);
   const [somar, setSomar] = useState(true);
+
+  ////////// Botão Voltar
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      recomecar();
+      setEscolherTempo(false);
+      setEscolher(false);
+      setNaoDefinido(false);
+      setComecar(true);
+      return () => BackHandler.remove();
+    });
+  }, []);
 
   const bora = () => {
     setContador(!contador);
