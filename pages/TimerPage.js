@@ -9,6 +9,7 @@ import {
   BackHandler,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useBackHandler} from '@react-native-community/hooks';
 
 export default function Timer(props) {
   LogBox.ignoreAllLogs();
@@ -108,19 +109,6 @@ export default function Timer(props) {
   const [secu, setSecu] = useState(0);
   const [somar, setSomar] = useState(true);
 
-  ////////// Botão Voltar
-
-  useEffect(() => {
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      recomecar();
-      setEscolherTempo(false);
-      setEscolher(false);
-      setNaoDefinido(false);
-      setComecar(true);
-      return () => BackHandler.remove();
-    });
-  }, []);
-
   const bora = () => {
     setContador(!contador);
   };
@@ -165,6 +153,29 @@ export default function Timer(props) {
     recomecar(trofeu);
   }
 
+  ////////// Botão Voltar
+
+  useBackHandler(() => {
+    recomecar();
+    setEscolherTempo(false);
+    setEscolher(false);
+    setNaoDefinido(false);
+    setComecar(true);
+    return true;
+  });
+
+  /* 
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      recomecar();
+      setEscolherTempo(false);
+      setEscolher(false);
+      setNaoDefinido(false);
+      setComecar(true);
+      return () => BackHandler.preventDefault();
+    });
+  }, []);
+*/
   return (
     <SafeAreaView style={es.corpo}>
       <View style={es.divTitulo}>

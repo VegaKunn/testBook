@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import Icones from 'react-native-vector-icons/Entypo';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useBackHandler} from '@react-native-community/hooks';
 
 const teste = [
   {id: '1', nome: 'Harry Pottery', nota: '10', pagi: '1000/1000'},
@@ -64,10 +65,17 @@ export default function Perfil(props) {
     BackHandler.addEventListener('hardwareBackPress', () => {
       setLidos(false);
       setProgresso(false);
-      return () => BackHandler.remove();
+      // BackHandler.preventDefault();
+      return () => BackHandler.preventDefault();
     });
   }, []);
-  */
+*/
+
+  useBackHandler(() => {
+    setLidos(false);
+    setProgresso(false);
+    return true;
+  });
 
   return (
     <SafeAreaView style={es.corpo}>

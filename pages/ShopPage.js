@@ -9,6 +9,9 @@ import {
   StyleSheet,
   LogBox,
 } from 'react-native';
+
+import {useBackHandler} from '@react-native-community/hooks';
+
 import CardLivros from '../components/CardLivros';
 import CategoriasShop from '../components/CategoriasShop';
 import Lista from '../components/Lista';
@@ -19,6 +22,7 @@ export default function Shop() {
   const [alternador, setAlternador] = useState(false);
   const [seletor, setSeletor] = useState(0);
 
+  /*
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => {
       setAlternador(false);
@@ -26,8 +30,14 @@ export default function Shop() {
       return () => BackHandler.remove();
     });
   }, []);
-
+*/
   //
+
+  useBackHandler(() => {
+    setAlternador(false);
+    setSeletor(0);
+    return true;
+  });
   return (
     <SafeAreaView style={es.corpo}>
       <ScrollView showsVerticalScrollIndicator={false} style={es.rolagem}>

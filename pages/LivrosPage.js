@@ -13,6 +13,8 @@ import {
   BackHandler,
 } from 'react-native';
 
+import {useBackHandler} from '@react-native-community/hooks';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icones from 'react-native-vector-icons/Feather';
 import Icones2 from 'react-native-vector-icons/AntDesign';
@@ -60,7 +62,7 @@ export default function Livros() {
   const [adicionar, setAdicionar] = useState(false); // se true mostra aba para cadastro
   const [ocultarNotas, setOcultarNotas] = useState(false);
   const [baka, setBaka] = useState('');
-
+  /*
   useEffect(() => {
     BackHandler.addEventListener('hardwareBackPress', () => {
       setLista(true);
@@ -72,6 +74,17 @@ export default function Livros() {
       return () => BackHandler.remove();
     });
   }, []);
+*/
+
+  useBackHandler(() => {
+    setLista(true);
+    setAbrir(false);
+    setSalvar(true);
+    setAdicionar(false);
+    setOcultarNotas(false);
+    setBaka('');
+    return true;
+  });
 
   const [livros, setLivros] = useState([]);
   // livros = [];
